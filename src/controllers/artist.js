@@ -14,4 +14,4 @@ const createArtist = async (req, res) => {
   }
 }
 
-module.exports = { createArtist };
+module.exports = { createArtist }; 
