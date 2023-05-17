@@ -23,5 +23,21 @@
     "mocha": "^10.2.0",
     "nodemon": "^2.0.21",
     "supertest": "^6.3.3"
-  }
+  },
+  "description": "This app was created with `@command-shift/create-backend-app`",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wilko2001/music-library.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Wilko2001/music-library/issues"
+  },
+  "homepage": "https://github.com/Wilko2001/music-library#readme"
 }
