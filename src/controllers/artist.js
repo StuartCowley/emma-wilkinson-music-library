@@ -86,10 +86,26 @@ const deleteArtist = async (req, res) => {
   }
 };
 
+
+const createAlbum = async (req, res) => {
+  const { name, year, artistId } = req.body;
+
+  try {
+    const {
+      rows: [album]
+    } = await db.query('insert into Albums(name, year, artistId) values($1, $2) returning *', [name, year, artistId])
+    res.status(201).json(album);
+  } catch (error) {
+    res.status(500).json(error.message)
+  }
+}
+
+
 module.exports = {
   createArtist,
   getAllArtists,
   getArtistById,
   updateArtist,
   deleteArtist,
+  createAlbum,
 };
