@@ -88,15 +88,21 @@ const deleteArtist = async (req, res) => {
 
 
 const createAlbum = async (req, res) => {
-  const { name, year, artistId } = req.body;
-
+  const { name, year } = req.body;
+  const { artistId } = req.params;
+  console.log(req.body);
+  console.log(req.params);
   try {
     const {
       rows: [album]
-    } = await db.query('insert into Albums(name, year, artistId) values($1, $2) returning *', [name, year, artistId])
+    } = await db.query('INSERT INTO Albums (name, year, artistId) VALUES ($1, $2, $3) RETURNING *', [
+      name,
+      year,
+      artistId
+    ]);
     res.status(201).json(album);
   } catch (error) {
-    res.status(500).json(error.message)
+    res.status(500).json({ error: error.message });
   }
 }
 
