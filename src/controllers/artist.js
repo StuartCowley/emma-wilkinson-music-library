@@ -95,7 +95,7 @@ const createAlbum = async (req, res) => {
   try {
     const {
       rows: [album]
-    } = await db.query('INSERT INTO Albums (name, year, artistId) VALUES ($1, $2, $3) RETURNING *', [
+    } = await db.query('INSERT INTO Albums (name, year, artistId) VALUES ( $1, $2, $3) RETURNING *', [
       name,
       year,
       artistId
