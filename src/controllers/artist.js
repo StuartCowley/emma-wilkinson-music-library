@@ -90,8 +90,6 @@ const deleteArtist = async (req, res) => {
 const createAlbum = async (req, res) => {
   const { name, year } = req.body;
   const { artistId } = req.params;
-  console.log(req.body);
-  console.log(req.params);
   try {
     const {
       rows: [album]
@@ -106,7 +104,6 @@ const createAlbum = async (req, res) => {
   }
 }
 
-
 module.exports = {
   createArtist,
   getAllArtists,
@@ -114,4 +111,4 @@ module.exports = {
   updateArtist,
   deleteArtist,
   createAlbum,
-};
+}
