@@ -3,7 +3,7 @@ const request = require('supertest');
 const db = require('../src/db');
 const app = require('../src/app');
 
-describe('read albums', () => {
+describe('read Albums', () => {
   let album;
   beforeEach(async () => {
     const responses = await Promise.all([
@@ -23,9 +23,9 @@ describe('read albums', () => {
     album = responses.map(({ rows }) => rows[0]);
   });
 
-  describe('GET /Album', () => {
+  describe('GET /Albums', () => {
     it('returns all album records in the database', async () => {
-      const { status, body } = await request(app).get('/album').send();
+      const { status, body } = await request(app).get('/albums').send();
 
       expect(status).to.equal(200);
       expect(body.length).to.equal(3);
@@ -38,16 +38,18 @@ describe('read albums', () => {
     });
   });
 
-  describe('GET /Album/{id}', () => {
+  describe('GET /albums/{id}', () => {
     it('returns the album with the correct id', async () => {
-      const { status, body } = await request(app).get(`/album/${album[0].id}`).send();
+      const { status, body } = await request(app).get(`/albums/${album[0].id}`).send();
 
       expect(status).to.equal(200);
       expect(body).to.deep.equal(album[0]);
     });
 
     it('returns a 404 if the album does not exist', async () => {
-      const { status, body } = await request(app).get('/albums/999999999').send();
+      const { status, body } = await request(app)
+        .get('/albums/999999999').
+        send();
 
       expect(status).to.equal(404);
       expect(body.message).to.equal('album 999999999 does not exist');
