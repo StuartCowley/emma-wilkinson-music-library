@@ -13,10 +13,10 @@ describe('create album', () => {
     artist = rows[0];
   });
 
-  describe('POST /artists/:artistId/albums', () => {
+  describe('POST /:artistId/albums', () => {
     it('creates an album released by the artist in the database', async () => {
       const { status, body } = await request(app)
-        .post(`/artists/${artist.id}/albums`)
+        .post(`/albums/${artist.id}/albums`)
         .send({
           name: 'MM..FOOD',
           year: 2004

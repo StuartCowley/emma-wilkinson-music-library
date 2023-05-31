@@ -27,7 +27,7 @@ describe("Update Album", () => {
     it("updates the album and returns the updated record", async () => {
       const { status, body } = await request(app)
         .patch(`/albums/${album.id}`)
-        .send({ name: "Updated Album", year: 2022 });
+        .send({ name: "Updated Album", year: 2022, artistid: artist.id });
       expect(status).to.equal(200);
       expect(body).to.deep.equal({
         id: album.id,
@@ -35,7 +35,9 @@ describe("Update Album", () => {
         year: 2022,
         artistid: artist.id,
       });
+      console.log(body);
     });
+
 
     it("returns a 404 if the album does not exist", async () => {
       const { status, body } = await request(app)

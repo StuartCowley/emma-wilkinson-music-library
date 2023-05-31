@@ -16,15 +16,17 @@ describe('Update Artist', () => {
 
   describe('PATCH /artists/{id}', () => {
     it('updates the artist and returns the updated record', async () => {
-      const { status, body } = await request(app).patch(`/artists/${artist.id}`).send({ name: 'Frank Sinatra', genre: 'Jazz' })
+      const { status, body } = await request(app)
+        .patch(`/artists/${artist.id}`)
+        .send({ name: 'Frank Sinatra', genre: 'Jazz' })
 
       expect(status).to.equal(200)
-
       expect(body).to.deep.equal({ id: artist.id, name: 'Frank Sinatra', genre: 'Jazz' })
     })
 
     it('returns a 404 if the artist does not exist', async () => {
-      const { status, body } = await request(app).patch('/artists/999999999').send({ name: 'Frank Sinatra', genre: 'Jazz' })
+      const { status, body } = await request(app).patch('/artists/999999999')
+        .send({ name: 'Frank Sinatra', genre: 'Jazz' })
 
       expect(status).to.equal(404)
       expect(body.message).to.equal('artist 999999999 does not exist')

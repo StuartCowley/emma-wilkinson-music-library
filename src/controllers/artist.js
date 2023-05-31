@@ -1,14 +1,12 @@
 const db = require('../db/index');
 
-
 const createArtist = async (req, res) => {
-
   const { name, genre } = req.body;
 
   try {
     const {
       rows: [artist]
-    } = await db.query('insert into artists(name, genre) values($1, $2) returning *', [name, genre])
+    } = await db.query('INSERT INTO Artists (name, genre) VALUES($1, $2) RETURNING *', [name, genre])
     res.status(201).json(artist);
   } catch (error) {
     res.status(500).json(error.message)
@@ -25,8 +23,9 @@ const getAllArtists = async (_, res) => {
 }
 
 const getArtistById = async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const { id } = req.params;
     const { rows: [artist] } = await db.query('SELECT * FROM Artists WHERE id = $1', [id])
 
     if (!artist) {
@@ -56,13 +55,11 @@ const updateArtist = async (req, res) => {
   }
 
   try {
-
     const { rows: [artist] } = await db.query(query, params)
 
     if (!artist) {
       return res.status(404).json({ message: `artist ${id} does not exist` })
     }
-
     res.status(200).json(artist)
   } catch (error) {
     console.log(error)
@@ -72,6 +69,7 @@ const updateArtist = async (req, res) => {
 
 const deleteArtist = async (req, res) => {
   const { id } = req.params;
+
   try {
     const { rows: [artist] } = await db.query('DELETE FROM Artists WHERE id = $1 RETURNING *', [id]);
 
@@ -86,29 +84,10 @@ const deleteArtist = async (req, res) => {
   }
 };
 
-
-const createAlbum = async (req, res) => {
-  const { name, year } = req.body;
-  const { artistId } = req.params;
-  try {
-    const {
-      rows: [album]
-    } = await db.query('INSERT INTO Albums (name, year, artistId) VALUES ( $1, $2, $3) RETURNING *', [
-      name,
-      year,
-      artistId
-    ]);
-    res.status(201).json(album);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}
-
 module.exports = {
   createArtist,
   getAllArtists,
   getArtistById,
   updateArtist,
   deleteArtist,
-  createAlbum,
 }

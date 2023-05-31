@@ -1,5 +1,23 @@
 const db = require('../db/index');
 
+const createAlbum = async (req, res) => {
+  const { name, year } = req.body;
+  const { artistId } = req.params;
+
+  try {
+    const {
+      rows: [album]
+    } = await db.query('INSERT INTO Albums (name, year, artistId) VALUES ( $1, $2, $3) RETURNING *', [
+      name,
+      year,
+      artistId
+    ]);
+    res.status(201).json(album);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 const getAllAlbums = async (_, res) => {
   try {
     const { rows } = await db.query('SELECT * FROM Albums')
@@ -10,8 +28,9 @@ const getAllAlbums = async (_, res) => {
 }
 
 const getAlbumsById = async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const { id } = req.params;
     const { rows: [Album] } = await db.query('SELECT * FROM Albums WHERE id = $1', [id])
 
     if (!Album) {
@@ -25,25 +44,26 @@ const getAlbumsById = async (req, res) => {
 
 const updateAlbum = async (req, res) => {
   const { id } = req.params
-  const { name, year } = req.body
+  const { name, year, artistid } = req.body
 
   let query, params
 
   if (name && year) {
-    query = `UPDATE Albums SET name = $1, year = $2 WHERE id = $3 RETURNING *`
-    params = [name, year, id]
+    query = `UPDATE Albums SET name = $1, year = $2, artistId = $3 WHERE id = $4 RETURNING *`;
+    params = [name, year, artistid, id];
   } else if (name) {
-    query = `UPDATE Albums SET name = $1 WHERE id = $2 RETURNING *`
-    params = [name, id]
+    query = `UPDATE Albums SET name = $1, artistId = $2 WHERE id = $3 RETURNING *`;
+    params = [name, artistid, id];
   } else if (year) {
-    // eslint-disable-next-line no-unused-vars
-    query = `UPDATE Albums SET year = $1 WHERE id = $2 RETURNING *`
-    // eslint-disable-next-line no-unused-vars
-    params = [year, id]
+    query = `UPDATE Albums SET year = $1, artistId = $2 WHERE id = $3 RETURNING *`;
+    params = [year, artistid, id];
+  } else if (artistid) {
+    query = `UPDATE Albums SET artistId = $1 WHERE id = $2 RETURNING *`;
+    params = [artistid, id];
   }
 
-  try {
 
+  try {
     const { rows: [album] } = await db.query(query, params)
 
     if (!album) {
@@ -59,6 +79,7 @@ const updateAlbum = async (req, res) => {
 
 const deleteAlbum = async (req, res) => {
   const { id } = req.params;
+
   try {
     const { rows: [album] } = await db.query('DELETE FROM Albums WHERE id = $1 RETURNING *', [id]);
 
@@ -74,6 +95,7 @@ const deleteAlbum = async (req, res) => {
 };
 
 module.exports = {
+  createAlbum,
   getAllAlbums,
   getAlbumsById,
   updateAlbum,

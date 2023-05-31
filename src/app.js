@@ -1,7 +1,7 @@
 const express = require('express');
 const artistRouter = require('./routes/artists');
-const app = express();
 const albumsRouter = require('./routes/albums');
+const app = express();
 
 app.use(express.json());
 
