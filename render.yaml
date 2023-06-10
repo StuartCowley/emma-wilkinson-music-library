@@ -1,0 +1,16 @@
+services:
+- type: web
+name: music-library
+env: node
+region: frankfurt
+plan: free
+builtCommand: npm install && npm run migrate
+startCommand: node index.js
+envVars:
+
+databases: 
+- name: 
+plan: free
+region: frankfurt
+databaseName:
+isAllowList:
